@@ -1,0 +1,13 @@
+Requirements for Dashboard:
+1. Nodes (active or not) (Like rosmon)
+2. Web admin (System admin rules) www.webmin.com cockpitproject.org RVIZ
+
+1. Strat and stop Nodes
+2. Activeness
+3. Configurable
+4. Camera feed (add sensor data)
+5. Multi-robot data access in browser
+6. 
+
+Questions:
+1. COnnect the ros nodes to cockpit
