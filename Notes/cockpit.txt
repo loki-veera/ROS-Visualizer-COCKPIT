@@ -1,0 +1,19 @@
+manifest.json tells the cockpit about the package
+in manifest.json:
+    1. tools subsection: each tool is listed in tools menu in cockpit
+    2. path is the name of the html file that implements tool
+    3. label is the text to show in the tools menu
+we haven't told about the tool to cockpit so place or symlink in one of two places:
+    ~/.local/share/cockpit
+    /usr/share/cockpit
+
+Download example to current directory:
+$ wget https://cockpit-project.org/files/pinger.tgz -O - | tar -xzf -
+$ cd pinger/
+
+symlink to firstplace
+$ mkdir -p ~/.local/share/cockpit
+$ ln -snf $PWD ~/.local/share/cockpit/pinger
+
+Command for seeing the packages installed
+$ cockpit-bridge --packages
