@@ -1,1 +1,13 @@
 ### Research for integrating HTML files with ROS
+
+* I was unable to install rosbridge beacuse ROS key needs to be updated once in a while. Before installing any ROS package we needto update all the previous ones,
+and then installing new package will work. If not then we need to update the ROS key we can do it by using the command mentioned on their official docs and then try 
+to install that package it will be install.
+
+* The very first link which LOkesh and I tried was : http://iguanatronics.com/simple-tutorial-on-rosbridge-and-roslibjs/ dint work.
+
+* http://wiki.ros.org/roslibjs/Tutorials/ActionlibClient These instructions could have worked but I had that port error .
+
+* http://wiki.ros.org/roslibjs/Tutorials/BasicRosFunctionality This link did not work in the start had teh same port error. I changed the port from '9090' to '9091'
+by using 'roslaunch rosbridge_server rosbridge_websocket.launch port:=9091'  and changin the port in html code. Now we have a conncetion between ROS and html file. 
+Just need to dig a bit more.
