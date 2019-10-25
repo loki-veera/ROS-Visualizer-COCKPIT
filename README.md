@@ -2,7 +2,7 @@
 
 A simple software for monitoring the ROS system on robot via web page on different computer. This software is mainly used for Robocup @work lab
 
-# Contibutors:
+# Contributors:
 1. Lokesh Veeramacheneni
 2. Anargh Viswanath
 
