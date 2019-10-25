@@ -1,0 +1,85 @@
+Doors - a fancy corporate excel representation for planning and viewing in a team.
+
+Create excel with req. and people responsible for the tasks.
+
+Github is good for low-level requirements, but tracking for high level req. is difficult.
+
+Workflow -- Jira, Github - Project boards, Gitlab boards
+------------------------------- Dashboard -----------------------------------------------------
+17.10.2019
+
+Deebul -- Client
+
+Live dashboard
+
+Lokesh-- What nodes active, live status of robot
+
+History - Deebul ==> Web services, should tell which has gone wrong
+
+webmin - web-based interface system
+cockpit - Template. bare things already available - install and gives browser - user connects to browser and connects by IP
+
+Should tell
+
+-- start and stop nodes
+-- Active nodes
+-- Configurable by user --> panels
+-- Camera feeds
+-- Control Center <--> Robot --- Browser should comm. with robot
+Browser with multi-robot access
+-- Software runs on the robot
+
+Actions needed
+
+-- (not clear-- more precise)
+-- Give options to user since not clear
+
+rviz and rvizweb -- one more tool
+Other system tools available but suggested by user -- cockpit
+
+
+Capture whole research for requirements next week..
+
+Document the research for how the requirements were reached..
+--------------------------------------------------------------------------------------------------
+Create a branch and push 
+--------------------------------------------------------------------------------------------------
+Discussion Team Members 17.10.2019
+
+Cockpit -- how to install, how to add a plug-in, languages that can be used - (1)
+
+shell script
+python script
+Find a way that roscore can be run and it can be shown...(2)
+
+Monday @ 5pm-- discuss (1) with Zuha and complete (2)
+ ----------------------------------------------------------------------------------------------
+24.10.2019
+
+Deebul
+
+Track each req. history
+Github - can't get history only the last edited
+Track issues to get history
+
+Requirements - find out documentation for open source
+Tools for doing requirement analysis
+
+How open source communities develop -ZeroMQ project(good example)
+There is coding standard for team 
+Keywords in the requirement - MUST; MUST NOT; SHALL; SHALL NOT; SHOULD; SHOULD NOT (RFC2119)
+
+GOALS - documented guidelines for code styles
+Contributers and maintainers
+
+Wireframe model and prototype
+
+HW: How will be the code tested - Testcases
+
+Write READme file-- follow guidelines
+Licenses
+Continuous integration
+
+<<<<<<<<<<<<<<<<<< Making software oneclick installable >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+
