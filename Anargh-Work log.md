@@ -4,9 +4,8 @@ Analysis done on cockpit (1st week results) (25.10.2019)
 -----------------------------------------------------------------------------------------------
 
 * First of all, managed to install the cockpit system on to the system using the command
-'''bash
+
 sudo apt-get install cockpit
-'''
 
 * Tried to analyze the working by viewing the code but because of unfamiliarity with Java script --> not much gained
 
