@@ -42,4 +42,44 @@ Capture whole research for requirements next week..
 
 Document the research for how the requirements were reached..
 --------------------------------------------------------------------------------------------------
+Create a branch and push 
+--------------------------------------------------------------------------------------------------
+Discussion Team Members 17.10.2019
+
+Cockpit -- how to install, how to add a plug-in, languages that can be used - (1)
+
+shell script
+python script
+Find a way that roscore can be run and it can be shown...(2)
+
+Monday @ 5pm-- discuss (1) with Zuha and complete (2)
+ ----------------------------------------------------------------------------------------------
+24.10.2019
+
+Deebul
+
+Track each req. history
+Github - can't get history only the last edited
+Track issues to get history
+
+Requirements - find out documentation for open source
+Tools for doing requirement analysis
+
+How open source communities develop -ZeroMQ project(good example)
+There is coding standard for team 
+Keywords in the requirement - MUST; MUST NOT; SHALL; SHALL NOT; SHOULD; SHOULD NOT (RFC2119)
+
+GOALS - documented guidelines for code styles
+Contributers and maintainers
+
+Wireframe model and prototype
+
+HW: How will be the code tested - Testcases
+
+Write READme file-- follow guidelines
+Licenses
+Continuous integration
+
+<<<<<<<<<<<<<<<<<< Making software oneclick installable >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
 
