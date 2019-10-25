@@ -1,4 +1,4 @@
-# Software Development Project - Weekly work progress
+# Software Development Project - Anargh's Weekly work progress
 -----------------------------------------------------------------------------------------------
 Analysis done on cockpit (1st week results) (25.10.2019)
 -----------------------------------------------------------------------------------------------
