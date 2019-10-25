@@ -4,7 +4,7 @@ A simple software for monitoring the ROS system on robot via web page on differe
 
 # Contibutors:
 1. Lokesh Veeramacheneni
-2. Anargh
+2. Anargh Viswanath
 
 # Required Softwares:
 This sections describes the softwares used along with the installation procedures
