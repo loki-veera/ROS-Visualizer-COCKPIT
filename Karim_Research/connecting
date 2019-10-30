@@ -4,6 +4,10 @@
 * Json files through websockets are used to establish a connection with ROS through web browser.
 * Websocket is a protocol that establishes a stable connection between a Client and a Server.
 * Ros lib is a package that supports ROS libraries
-
+* We create a Ros node and connect it to local host n port 9091.
+* We add a listner, publisher and display result on html page.
+* We were able to connect the html with ros using rosbrige and roscore.
+* We used  ROSLIB objects  and functions for subscribing to a topic message,  listening to a topic but this has not been done in 
+  detail still have to work on it as as well as on changing the parameters in ROS 
 
 
