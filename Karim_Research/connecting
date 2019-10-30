@@ -1,0 +1,9 @@
+
+#### Connecting Html to ROS
+* Ros brige is a package that uses JSON files to use ROS functionalities. It is for people who do not know how to work with ros.
+* Json files through websockets are used to establish a connection with ROS through web browser.
+* Websocket is a protocol that establishes a stable connection between a Client and a Server.
+* Ros lib is a package that supports ROS libraries
+
+
+
