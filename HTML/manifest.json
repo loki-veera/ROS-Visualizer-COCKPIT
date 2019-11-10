@@ -1,0 +1,10 @@
+{
+    "version": 0,
+
+    "tools": {
+        "p": {
+            "label": "Dashboard",
+            "path": "Dashboard.html"
+        }
+    }
+}
