@@ -8,7 +8,7 @@ document.getElementById("start").addEventListener("click", initial_run);
 document.getElementById("node_start").addEventListener("click",node_test);
 
 function initial_run() {
-    var proc = cockpit.script('')
+    var proc = cockpit.script('python /home/lokesh/MAS/Semester Two/SDP/git/Software-Development-Project/Dashboard/Python/start_ROS.py')
     proc.done(initial_success);
     proc.stream(initial_output);
     proc.fail(initial_fail);
