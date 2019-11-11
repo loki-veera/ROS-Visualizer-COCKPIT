@@ -11,9 +11,13 @@ to install that package it will be install.
 * http://wiki.ros.org/roslibjs/Tutorials/BasicRosFunctionality This link did not work in the start had teh same port error. I changed the port from '9090' to '9091'
 by using 'roslaunch rosbridge_server rosbridge_websocket.launch port:=9091'  and changin the port in html code. Now we have a conncetion between ROS and html file. 
 
-#### Rosbrige
+#### Connecting Html to ROS
 * Ros brige is a package that uses JSON files to use ROS functionalities. It is for people who do not know how to work with ros.
 * Json files through websockets are used to establish a connection with ROS through web browser.
 * Websocket is a protocol that establishes a stable connection between a Client and a Server.
 * Ros lib is a package that supports ROS libraries
-
+* We create a Ros node and connect it to local host n port 9091.
+* We add a listner, publisher and display result on html page.
+* We were able to connect the html with ros using rosbrige and roscore.
+* We used  ROSLIB objects  and functions for subscribing to a topic message,  listening to a topic but this has not been done in 
+  detail still have to work on it as as well as on changing the parameters in ROS
