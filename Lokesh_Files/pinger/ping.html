@@ -1,0 +1,59 @@
+<head>
+    <title>Pinger</title>
+    <meta charset="utf-8">
+    <link href="../base1/cockpit.css" type="text/css" rel="stylesheet">
+    <script src="../base1/jquery.js"></script>
+    <script src="../base1/cockpit.js"></script>
+</head>
+<body>
+    <div class="container-fluid" style='max-width: 400px'>
+        <table class="cockpit-form-table">
+            <tr>
+                <td><label class="control-label" for="address">Address</label></td>
+                <td><input class="form-control" id="address" value="8.8.8.8"></td>
+            </tr>
+            <tr>
+                <td><button class="btn btn-default btn-primary" id="ping">Ping</button></td>
+		<td><span id="result"></span></td>
+            </tr>
+        </table>
+        <p>
+	    <pre id="output"></pre>
+        </p>
+    </div>
+
+    <script>
+        var address = $("#address");
+        var output = $("#output");
+        var result = $("#result");
+
+        $("#ping").on("click", ping_run);
+
+        function ping_run() {
+            var proc1 = cockpit.script("python2 /home/lokesh/pinger/start_nodes.py")
+            var proc = cockpit.script("less /home/lokesh/pinger/out.txt")
+            proc.done(ping_success);
+            proc.stream(ping_output);
+            proc.fail(ping_fail);
+
+            result.empty();
+            output.empty();
+        }
+
+        function ping_success() {
+            result.css("color", "green");
+            result.text("ROS started");
+        }
+
+        function ping_fail() {
+            result.css("color", "red");
+            result.text("ROS started to fail");
+        }
+
+        function ping_output(data) {
+            output.append(document.createTextNode(data));
+        }
+    </script>
+</body>
+</html>
+
