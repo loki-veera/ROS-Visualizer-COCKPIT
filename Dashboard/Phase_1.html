@@ -8,75 +8,65 @@
     </head>
     <body>
         <header>
-            <div class = 'title'>
-                <h1>youBot Dashboard</h1>
+            <div>
+                <h1 style="font-weight: bold;font-size: 300%">
+                    youBot Dashboard</h1>
+                <br/><br/>
             </div>
             <div class = 'Phase-1'>
-                <input type = "button" onClick = ret_path(); value = "Start ROS" id = "ROS_START">
-                <input type = "button" onclick = launch_file(); value = "Bring up" id = "BRINGUP_LAUNCH">
+                <input type = "button" onClick = ret_path(); value = "Start ROS" id = "ROS_START"> &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+                <input type = "button" onClick = kill_rosmaster(); value = "KILL ALL &#9888" id = "ROS_KILL" style="background-color: yellow;"><br/><br/><br/>
+                <label for="launch_file"><span style="font-size: 120%">Select a launch file</span></label>
+                <input type = "file" id = "launch_file" name = "launch_file" onchange = launch_file(); accept = "application/xml" />
+                <br/><br/>
             </div>
         </header>
         <script>
         var interval;
-        var path;
-        var run_time = 0;
+        document.addEventListener('DOMContentLoaded', function() {
+            // your code here
+            check_ros_run();
+        }, false);
+
+        function kill_rosmaster(){
+            var command = "bash /usr/share/cockpit/dashboard/bash_files/start_check_ros_2.sh 2";
+            var proc = cockpit.script(command);
+            proc.stream(ping_output);
+        }
+
+
         /*
          Function to locate the start_check_ros.sh file so that it works in any system
          this function is invoked on click of start ROS button
         */
         function ret_path(){
-            var proc1 = cockpit.script("locate start_check_ros_2.sh");
-            proc1.stream(get_path);
-        }
-        /*
-         This function is used to read the file path from ret_path function and calls 
-         start_ros function with path to start_check_ros.sh as argument
-        */
-        function get_path(data){
-            path = data
-            console.log("data")
-            console.log(path)
-            start_ros(path);
-        }
-        /*
-         This function is used to start ros if not running.
-        */
-        function start_ros(path) {
-            path = path.trim()
-            console.log(typeof(path))
-            var command = ["bash", path, "1"].join(" ");
-            console.log("In path")
-            console.log(command)
-            var proc = cockpit.script(command)
+            var command = "bash /usr/share/cockpit/dashboard/bash_files/start_check_ros_2.sh 1";
+            var proc = cockpit.script(command);
             proc.stream(ping_output);
-            check_ros(path);
+            check_ros();
         }
         
         /*
          This function is used to set the interval to check roscore status.
         */
-        function check_ros(path){
-            interval = setInterval(function() {check_ros_run(path);},2000);
+        function check_ros(){
+            interval = setInterval(function() {check_ros_run();},2000);
         }
 
         /*
          This function is used to check whether the roscore is running or not.
         */
-        function check_ros_run(path){
-            console.log("In chec ros run")
-            path = path.trim()
-            var command = ["bash", path, "0"].join(" ");
-            console.log(command)
-            // var proc = cockpit.script("bash /home/lokesh/pinger/bash_files/start_check_ros.sh 0");
+        function check_ros_run(){
+            var command = "bash /usr/share/cockpit/dashboard/bash_files/start_check_ros_2.sh 0"
             var proc = cockpit.script(command)
             proc.stream(ping_output);
         }
+
         /*
          In this function the color of the start ROS button is changed according to the status from
          check_ros_run and start_ros functions
         */
         function ping_output(data) {
-            console.log("In ping_output method")
             console.log(data)
             if (data == 1)
             {
@@ -86,6 +76,35 @@
                 clearInterval(interval);
                 document.getElementById("ROS_START").style.background = "#FF4500";
             }
+            else if (data == 2){
+                document.getElementById("ROS_START").style.background = "#FF4500";
+                document.getElementById("launch_file").style.background = "#FFFFFF";
+                document.getElementById("launch_file").value = null;
+            }
+            else if (data == 3){
+                console.log(data)
+                document.getElementById("launch_file").style.background = "#32CD32";
+                for(i=0; i<1000000000; i++){
+                    
+                }
+                check_ros_run()
+                // print_nodes()
+            }
+        }
+
+        /*
+         Functions for launch a file
+        */
+
+        /*
+         This function is called when a launch file is selected
+        */
+        function launch_file(){
+            var file_name = document.getElementById('launch_file').value.split("\\").reverse()[0].trim()
+            var command = ["bash /usr/share/cockpit/dashboard/bash_files/bring_launch_file.sh", file_name].join(" ")
+            console.log(command)
+            var proc1 = cockpit.script(command)
+            proc1.stream(ping_output)
         }
         </script>
     </body>      

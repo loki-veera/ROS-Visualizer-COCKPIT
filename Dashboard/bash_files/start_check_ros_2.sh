@@ -1,6 +1,5 @@
 #!/bin/bash
-
-source "/home/lokesh/kinetic/devel/setup.bash"
+source "/home/loki/catkin_ws/devel/setup.bash"
 
 if [ $1 == 1 ]
 then
@@ -16,4 +15,8 @@ then
     else
         echo 1
     fi
+elif [ $1 == 2 ]
+then
+    core=$(killall -9 rosmaster)
+    echo 2
 fi
