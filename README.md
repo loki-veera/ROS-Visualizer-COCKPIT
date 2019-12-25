@@ -35,8 +35,17 @@ sudo apt-get -y install cockpit
 1. Python - PEP8
 2. Javascript - Google JavaScript Style Guide
 
-# How to use?
-Please see Instruction.pdf for installation steps
+# How to Install?
+Step-01:
+Clone the Repository to the destination folder using 
+```bash
+git clone git@github.com:lokeshveeramacheneni/Software-Development-Project.git
+```
+Step-02:
+Open Dashboard folder and then run the below command from terminal
+```bash
+bash install.sh
+```
 
 # Credits:
 
