@@ -36,6 +36,7 @@ sudo apt-get -y install cockpit
 2. Javascript - Google JavaScript Style Guide
 
 # How to use?
+Please see Instruction.pdf for installation steps
 
 # Credits:
 
