@@ -50,3 +50,4 @@ bash install.sh
 # Credits:
 
 # License:
+Mozilla Public License 2.0
