@@ -28,7 +28,7 @@ then
         ret=$(eval $cmd)
         cmd="ln -snf $PWD ~/.local/share/cockpit/dashboard"
         ret=$(eval $cmd)
-        cmd="sudo cp -R $PWD/Dashbaord/bashfiles /usr/share/cockpit/dashboard"
+        cmd="sudo cp -R $PWD/bash_files /usr/share/cockpit/dashboard"
         ret=$(eval $cmd)
     fi
 fi
