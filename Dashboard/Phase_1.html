@@ -1,0 +1,216 @@
+<html>
+    <head>
+        <title>youBot Dashboard</title>
+        <meta charset="utf-8">
+        <link href="../base1/cockpit.css" type="text/css" rel="stylesheet">
+        <script src="../base1/jquery.js"></script>
+        <script src="../base1/cockpit.js"></script>
+        <style>
+            .dropbtn {
+              background-color: #3498DB;
+              color: white;
+              padding: 8px;
+              font-size: 8px;
+              border: none;
+              cursor: pointer;
+            }
+            
+            .dropbtn:hover, .dropbtn:focus {
+              background-color: #2980B9;
+            }
+            
+            .dropdown {
+              position: relative;
+              display: inline-block;
+            }
+            
+            .dropdown-content {
+              display: none;
+              position: absolute;
+              background-color: #f1f1f1;
+              min-width: 160px;
+              overflow: auto;
+              box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+              z-index: 1;
+            }
+            
+            .dropdown-content a {
+              color: black;
+              padding: 12px 16px;
+              text-decoration: none;
+              display: block;
+            }
+            
+            .dropdown a:hover {background-color: #ddd;}
+            
+            .show {display: block;}
+            </style>
+    </head>
+    <body>
+        <header>
+            <div class = 'title'>
+                <h1>youBot Dashboard</h1>
+            </div>
+            <div class = 'Phase-1'>
+                <input type = "button" onClick = ret_path(); value = "Start ROS" id = "ROS_START">
+                <input type = "button" onclick = launch_file(); value = "Bring up" id = "BRINGUP_LAUNCH">
+            </div>
+            <div > </div>
+           
+        </header>
+        <!-- ZUHA DROP DOWN   --> 
+        <div class="dropdown">
+            <button onclick="myFunction()" class="dropbtn">Rostoic List</button>
+            <div id="myDropdown" class="dropdown-content">
+            <input type="button" value="Ros Node list" onclick="detailsNode()" />
+  
+        </div>
+        <script>
+        var interval;
+        var path;
+        var run_time = 0;
+        /* When the user clicks on the button, 
+        toggle between hiding and showing the dropdown content */
+        function myFunction() {
+        document.getElementById("myDropdown").classList.toggle("show");
+        
+        }
+          
+
+        /*
+         Function to locate the start_check_ros.sh file so that it works in any system
+         this function is invoked on click of start ROS button
+        */
+        function ret_path(){
+            var proc1 = cockpit.script("locate start_check_ros_2.sh");
+            proc1.stream(get_path);
+        }
+        /*
+         This function is used to read the file path from ret_path function and calls 
+         start_ros function with path to start_check_ros.sh as argument
+        */
+        function get_path(data){
+            path = data
+            console.log("data")
+            console.log(path)
+            start_ros(path);
+        }
+        /*
+         This function is used to start ros if not running.
+        */
+        function start_ros(path) {
+            path = path.trim()
+            console.log(typeof(path))
+            var command = ["bash", path, "1"].join(" ");
+            console.log("In path")
+            console.log(command)
+            var proc = cockpit.script(command)
+            proc.stream(ping_output);
+            check_ros(path);
+        }
+        
+        /*
+         This function is used to set the interval to check roscore status.
+        */
+        function check_ros(path){
+            interval = setInterval(function() {check_ros_run(path);},2000);
+        }
+
+        /*
+         This function is used to check whether the roscore is running or not.
+        */
+        function check_ros_run(path){
+            console.log("In chec ros run")
+            path = path.trim()
+            var command = ["bash", path, "0"].join(" ");
+            console.log(command)
+            // var proc = cockpit.script("bash /home/lokesh/pinger/bash_files/start_check_ros.sh 0");
+            var proc = cockpit.script(command)
+            proc.stream(ping_output);
+        }
+        /*
+         In this function the color of the start ROS button is changed according to the status from
+         check_ros_run and start_ros functions
+        */
+        function ping_output(data) {
+            console.log("In ping_output method")
+            console.log(data)
+            if (data == 1)
+            {
+                document.getElementById("ROS_START").style.background = "#32CD32";
+
+            }
+            else if (data == 2){
+                clearInterval(interval);
+                document.getElementById("ROS_START").style.background = "#FF4500";
+            }
+
+        }
+       
+        /* ZUHA CODE
+         THis function is to get the ros topic list from basch file 
+           
+         THis function is to get the path of basch file */
+        var path_rostopicfile = './bash_files/rostopic_list.sh'
+        var path2_rostopic = '/home/zuha/Downloads/Assignment_COntent/SDP/Software-Development-Project/Dashboard/bash_files/rostopic_list.sh'
+        //console.log(path2_rostopic)
+        //console.log(path_rostopicfile)
+
+        /* This function is to locate the bash file
+        function zuha_basch_path(){
+            console.log("datauuu1")
+
+            var proc2 = cockpit.script("locate rostopic_list.sh");
+            proc2.stream(get_path_rostopicbash);
+            console.log( proc2.stream(get_path_rostopicbash))
+
+        }
+          
+        THis function is to get the path of basch file 
+        function get_path_rostopicbash(data_z){
+            path_zuha = data_z
+            console.log("datauuu3")
+            console.log(path_zuha)
+            detailsNode(path_zuha);
+        } 
+        
+        */
+        function detailsNode(){
+
+        /*
+         This function is used to read the file path from ret_path function and calls 
+         start_ros function with path to start_check_ros.sh as argument
+        topiclist=$(rostopic list)
+
+        */
+        console.log('in details node')
+        
+        //var path_bash = ["bash",path_rostopicfile,"2"].join(" ");  
+        //console.log(path_bash)
+        console.log('test1')
+        //var proc = cockpit.script(path_rostopicfile)
+        var proc = cockpit.script('bash /home/zuha/Downloads/Assignment_COntent/SDP/Software-Development-Project/Dashboard/bash_files/rostopic_list.sh 2')
+        proc.stream(checking_topic_list);
+        console.log("afer ping") 
+        
+        }
+
+        function checking_topic_list(topic_list){
+            console.log("In the fucntion checking topiclist") 
+            var list_topiclist = [topic_list]
+            console.log(list_topiclist)
+            console.log('list_topiclist')
+            var select = document.getElementById("myDropdown"); 
+
+            // Optional: Clear all existing options first:
+            select.innerHTML = "";
+            // Populate list with options:
+            for(var i = 0; i <  list_topiclist.length; i++) {
+                var opt =  list_topiclist[i];
+                select.innerHTML += "<option value=\"" + opt + "\">" + opt + "</option>";
+            }  
+            //document.getElementById("myDropdown").innerHTML= topic_list
+        }
+        </script>
+    </body>      
+</html>
