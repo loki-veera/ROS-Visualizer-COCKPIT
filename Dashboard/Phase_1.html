@@ -7,7 +7,7 @@
         <script src="../base1/cockpit.js"></script>
         <style>
             .dropbtn {
-              background-color: #3498DB;
+              background-color: rgb(235, 34, 134);
               color: white;
               padding: 8px;
               font-size: 8px;
@@ -16,7 +16,7 @@
             }
             
             .dropbtn:hover, .dropbtn:focus {
-              background-color: #2980B9;
+              background-color: rgb(240, 32, 188);
             }
             
             .dropdown {
@@ -58,12 +58,11 @@
             <div > </div>
            
         </header>
-        <!-- ZUHA DROP DOWN   --> 
+        <!-- ZUHA DROP DOWN  -->
         <div class="dropdown">
             <button onclick="myFunction()" class="dropbtn">Rostoic List</button>
             <div id="myDropdown" class="dropdown-content">
-            <input type="button" value="Ros Node list" onclick="detailsNode()" />
-  
+            <input type="button" value="Ros Node list" onclick="detailsNode()" />   
         </div>
         <script>
         var interval;
@@ -197,18 +196,25 @@
 
         function checking_topic_list(topic_list){
             console.log("In the fucntion checking topiclist") 
-            var list_topiclist = [topic_list]
+            var list_topiclist = topic_list
             console.log(list_topiclist)
             console.log('list_topiclist')
             var select = document.getElementById("myDropdown"); 
+            // checking this dropdown
+            var list_topiclists = ["BMW", "Volvo", "Saab", "Ford", "Fiat", "Audi"];
+            
 
-            // Optional: Clear all existing options first:
+        
+            // Optional: Clear all existing options first: rostopic echo /topicname
             select.innerHTML = "";
             // Populate list with options:
-            for(var i = 0; i <  list_topiclist.length; i++) {
+            var i;
+            for( i = 0; i <  list_topiclist.length; i++) {
                 var opt =  list_topiclist[i];
                 select.innerHTML += "<option value=\"" + opt + "\">" + opt + "</option>";
+                //select.innerHTML +=  opt  ;
             }  
+           
             //document.getElementById("myDropdown").innerHTML= topic_list
         }
         </script>
