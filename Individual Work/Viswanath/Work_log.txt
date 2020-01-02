@@ -1,0 +1,113 @@
+											Software Development Project - Weekly work progress
+											----------------------------------------------------
+(Author - Anargh)
+
+Analysis done on cockpit (25.10.2019)
+-------------------------------------
+* First of all, managed to install the cockpit system on to the system using the command '''bash sudo apt-get install cockpit '''
+
+* Tried to analyze the working by viewing the code but because of unfamiliarity with Java script --> not much gained
+
+* Went through the videos of cockpit. The makers of videos illustrated the installation of application but not much information on how the applications were made.
+
+* After discussion with Deebul, got a lead towards installing plug-in through Starter kit module on Cockpit blogs instead of creating applications.
+
+* Went through the documentation for Starter kit for cockpit on https://cockpit-project.org/blog/cockpit-starter-kit.html to understand how to create own pages and plug-ins for cockpit.
+
+* Separately installed Starter kit module by following instructions on https://github.com/cockpit-project/starter-kit -- (Had problems initially because npm wasn't installed on the system as suggested on the link)
+
+* After this, to understand how the packages work, copied the files of pinger example into the folder of Cockpit placed at the location usr/share/cockpit into a new folder named Test.
+
+* The pinger example allowed the realization that there are 3 essential components required to create a new page -->
+
+*** manifest.json file -- so as to help cockpit realize that this has to be added no matter wherever this file is on the system (Not necessary to be placed in the cockpit files folder)
+*** .html -- to design the html page
+*** .js -- to create functionalities on the page in java script
+Tweaked the code of pinger to create a new menu item. Added new items in .js file which didn't work as expected.
+
+* Looked into rosbridge, but found that it needs the roscore to be launched on the server before the bridge can be used for cockpit. Hence roscore can't be launched from cockpit since it is already running. So it seems not much of use, hence abandoned the idea.
+
+* In class, Deebul suggested to look into ROS capabilities. The team decided to look at it since we still haven't managed to run roscore using cockpit.
+
+* In team discussion, we had a difference of opinion on the approach. Lokesh was in favour of finding how to link the html page with ros while I believe if we know how the terminal package in cockpit works then it can be utilized. Lokesh suggested that this approach is tedious since requires extensive knowledge of cockpit, which I feel is true. Finally decided that this week, we will work on our individual approaches and compare our results next week for choosing the best.
+
+* Also have the assignement from Deebul to generate pull requests and reviewing them on git.
+
+* I personally will try on both Lokesh's as well as my original idea to get a breakthrough.
+
+* Reviewed pull request from lokesh and merged it to master.
+
+* Generated a pull request for adding name into READme file.
+
+* Learning about web APIs. This link is helpful https://developer.mozilla.org/en-US/docs/Web/API.
+
+* Managed to find a way to create a widget in cockpit. Created a new widget in cockpit by adding files based on pinger example in the location /usr/share/cockpit called test.
+
+Decided on approach (06.10.2019)
+--------------------------------
+* Was able to get deeper into the cockpit terminal. Found cockpit folders placed in the /usr/share/cockpit location. All folders are different widgets created in cockpit. On examining code of these it was inferred that many are linked to the terminal widget.
+
+* Lokesh managed to connect ROS and cockpit through nodejs.
+
+* In class, Prof. Nico suggested that Lokesh's approach of linking ROS and cockpit through nodejs instead of linking through terminal package as it seemed to be more complex. But Lokesh suggested to look more into it as it may come in handy.
+
+* Team decided to divide the task based on Deebul's suggestions. So the first phase was divided into 3.
+
+* Lokesh and Zuha decided to work on connecting ROS and cockpit, while I decided to take up the task of designing the Dashboard HTML.
+
+* Created button based HTML page for the Dashboard widget to be placed inside the cockpit interface. Added some graphical elements to make it fancy.
+
+* Abandoned the node js approach. Instead trying to connect with Python.
+
+Linking the ROS with cockpit (14.10.2019)
+-----------------------------------------
+* Created different buttons based HTML page for the Dashboard widget to be placed inside the cockpit interface. This was as per the requirements statements by Lokesh. 
+
+* In class, Deebul gave an introduction into Software testing using Dojo and Fizzbuzz test.
+
+* Deebul suggested that the we divide the task where each person is doing one specific task.
+
+* The tasks were divided into 3: Lokesh - Python file for ROS, Me - HTML and designing and Zuha - Packaging and testing.
+
+* He wanted the items within HTML to be customisable- they could be moved and expanded.
+
+* Managed to create those movable and expandable options in cockpit widget HTML.
+
+* Issue with connecting path to ROS from cockpit faced by Lokesh. Looking into it but not getting headaway.
+
+Sprint 2 staring (05.12.2019)
+-----------------------------
+
+* The sprint 1 was completed with the prototype being able to start and display roscore and rosnodes in cockpit.
+
+* According to Deebul's requirements, he wanted a GUI with 3 parts:
+** ROSCore start and run, as well as a selection for a particular package - Taken by Lokesh
+** A display for seeing the nodes in the specific launch file - Taken by me.
+** A display to see ROS topics with dropdown options. - Zuha
+
+Before vacations (18.12.2019)
+-----------------------------
+* The Plan involved 5 parts - 
+1.Inside python file getting current running nodes through rosnode list.
+2.Through launch parser getting nodes inside the launch file.
+3.Comparing both to get the running and non-runnig nodes in launch file.
+4.Display those nodes in color using create Element method in Javascript.
+
+* Tried getting outside packages inside ROS for testing launch files but the build is failing.
+
+* Created nodes and own launch files to test both again the build is failing.
+
+* Before Deebul Couldn't show the results as the ROS build was failing for testing and adding packages to test the launch parser.
+
+* Able to get some clarity from Minh for ROS build failing.
+
+* Uninstalled and re-installed ROS.
+
+* Meanwhile got hands on launch parser made by Minh for RoboCup@home implemented on CAre-o-bot. Could be used for my task and is really helpful.
+
+* Testing out the launch parser made by Minh. So two phases of plan almost completed.
+
+
+
+ 
+
