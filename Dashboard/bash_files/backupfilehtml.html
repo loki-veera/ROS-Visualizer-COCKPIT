@@ -42,9 +42,10 @@
             }
             .selectdropdown{
 
+                background-color: rgb(235, 34, 134);
               color: black;
-              padding: 18px;
-              font-size: 12px;
+              padding: 8px;
+              font-size: 8px;
             }
         
             .dropdown a:hover {background-color: #ddd;}
@@ -67,8 +68,11 @@
        
 
           <!-- ZUHA DROP DOWN   --> 
-         
-         <!-- i can put onlcick func for the 3rd task and fix the display and initialye detailsnode() function --> 
+          <div class="dropdown">
+            <button onclick="myFunction()" class="dropbtn">Rostoic List</button>
+            <div id="myDropdown" class="dropdown-content">
+            <input type="button"  id="myDropdown" value="Ros Topic list" onclick="detailsNode()" />
+        </div>
         <div class="selectdropdown">
         <select id="select">
             <option value="default">Rostopic list</option>
@@ -79,6 +83,17 @@
         var interval;
         var path;
         var run_time = 0;
+        /* When the user clicks on the button, 
+        toggle between hiding and showing the dropdown content */
+        function myFunction() {
+        document.getElementById("myDropdown").classList.toggle("show");
+        
+        }
+
+        function adetailsNode() {
+            console.log('afsa')
+        }
+
 
         /*
          Function to locate the start_check_ros.sh file so that it works in any system
@@ -148,17 +163,36 @@
                 document.getElementById("ROS_START").style.background = "#FF4500";
             }
 
-            
-
         }
        
         /* ZUHA CODE
-         THis function is to get the ros topic list from basch file  */
+         THis function is to get the ros topic list from basch file 
+           
+         THis function is to get the path of basch file */
         var path_rostopicfile = './bash_files/rostopic_list.sh'
         var path2_rostopic = '/home/zuha/Downloads/Assignment_COntent/SDP/Software-Development-Project/Dashboard/bash_files/rostopic_list.sh'
-        var select = document.getElementById("select").addEventListener("change", detailsNode(), false);
-        
+        //console.log(path2_rostopic)
+        //console.log(path_rostopicfile)
 
+        /* This function is to locate the bash file
+        function zuha_basch_path(){
+            console.log("datauuu1")
+
+            var proc2 = cockpit.script("locate rostopic_list.sh");
+            proc2.stream(get_path_rostopicbash);
+            console.log( proc2.stream(get_path_rostopicbash))
+
+        }
+          
+        THis function is to get the path of basch file 
+        function get_path_rostopicbash(data_z){
+            path_zuha = data_z
+            console.log("datauuu3")
+            console.log(path_zuha)
+            detailsNode(path_zuha);
+        } 
+        
+        */
         function detailsNode(){
 
         /*
@@ -168,10 +202,14 @@
 
         */
         console.log('in details node')
+        
+        //var path_bash = ["bash",path_rostopicfile,"2"].join(" ");  
+        //console.log(path_bash)
         console.log('test1')
         //var proc = cockpit.script(path_rostopicfile)
         var proc = cockpit.script('bash /home/zuha/Downloads/Assignment_COntent/SDP/Software-Development-Project/Dashboard/bash_files/rostopic_list.sh 2')
         proc.stream(checking_topic_list);
+        
         }
 
         function checking_topic_list(topic_list){
@@ -180,23 +218,31 @@
             // split by spaces
             list_topiclist = list_topiclist.trim().split(/\s+/)
             console.log(list_topiclist)
+             /*    // old dropdown   
+            var select = document.getElementById("myDropdown"); 
              
             //  rostopic echo /topicname
         
+            select.innerHTML = " "
+            // Populate list with options:
+            var i;
+            for( i = 0; i <  list_topiclist.length; i++) {
+                var opt =  list_topiclist[i];
+                select.innerHTML += "<option value>" + opt + "</option> ";
+            }  */
            // dropdown
             var select = document.getElementById("select"),
-      
             arr = list_topiclist
              
              for(var i = 0; i < arr.length; i++)
              {
                  var option = document.createElement("OPTION"),
-                 txt = document.createTextNode(arr[i]);
+                    txt = document.createTextNode(arr[i]);
                  option.appendChild(txt);
                  option.setAttribute("value",arr[i]);
                  select.insertBefore(option,select.lastChild);
              }
-           
+            //document.getElementById("myDropdown").innerHTML= topic_list
         }
         </script>
     </body>      
