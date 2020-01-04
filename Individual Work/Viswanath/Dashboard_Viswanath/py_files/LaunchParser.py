@@ -1,4 +1,21 @@
 #!/bin/env python
+"""Parses through ROS Launch file to get details.
+
+Used for getting the information from a ROS Launch file. The nodes' details
+are returned. Path of the launch file has to provided as command line argument
+and is used for getting the name of the respective package for operation.
+"""
+
+__author__ = "Minh Nguyen"
+__credits__ = ["Anargh Viswanath"]
+__license__ = "MPL"
+__version__ = "1.0.1"
+__maintainer__ = "Minh Nguyen"
+__email__ = " "
+__status__ = "Development"
+__created_on__ = " "
+__last_modified__ = "04.01.2020"
+
 import os
 import re
 import sys
@@ -9,10 +26,10 @@ from roslib.packages import get_pkg_dir, get_dir_pkg, \
 
 INDENT = '  '
 
-def Merge(dict1, dict2):
-    return(dict2.update(dict1))
-
 class LaunchRootParser(object):
+    """Class for root parsing through a launch file.
+
+    """
     def __init__(self, launch_root, arg_dict={}):
         self.includes = []
         self.groups = {}
@@ -232,26 +249,48 @@ class LaunchRootParser(object):
         value = self.parse_xml_value(argument.get('value'))
         return name, default_value, value
 
-    def print_launch_components_recursive(self, prefix=''):
-        # print('Launch components recursive')
-        # print(self.nodes)
+    def get_launch_components_recursive(self):
+        """Function to return the nodes inside the launch file.
+
+        Parameters
+        ----------
+
+        Returns
+        -------
+        self.nodes : dictionary
+            This has the details of the nodes as a dictionary with params.
+        """
         return self.nodes
-        # print issues
 
+    def get_includes_recursive(self, prefix=''):
+        """Function to return the nodes inside the included components of
+        launch file.
 
-    def print_includes_recursive(self, prefix=''):
+        Parameters
+        ----------
+        prefix : string
+            To provide as indentation in argumennts while calling recursively.
+
+        Returns
+        -------
+        self.nodes : dictionary
+            This has the details of the nodes as a dictionary with params.
+        """
         Nodes = {}
         for include_object in self.includes:
-            Merge(include_object.print_launch_components_recursive(prefix + INDENT), Nodes)
+            Merge_node_details(include_object.get_launch_components_recursive(prefix + INDENT), Nodes)
             pass
         for group_object in self.groups.itervalues():
-            Merge(group_object.print_includes_recursive(prefix + INDENT), Nodes)
+            Merge_node_details(group_object.get_includes_recursive(prefix + INDENT), Nodes)
             pass
         return Nodes
-
     pass
 
 class LaunchFileParser(LaunchRootParser):
+    """Class for LaunchFileParser to parse through ROS launch file and return
+    nodes.
+
+    """
     def __init__(self, launch_file_path, arg_dict={}):
         try:
             launch_root = ET.parse(launch_file_path).getroot()
@@ -264,13 +303,41 @@ class LaunchFileParser(LaunchRootParser):
             sys.stderr.write('no package found for file %s' % (self.path))
             self.package_name = ''
             pass
-        # print('\nparsing launch file %s' % launch_file_path)
         super(LaunchFileParser, self).__init__(launch_root, arg_dict=arg_dict)
         pass
 
-    def print_launch_components_recursive(self, prefix=''):
+    def get_launch_components_recursive(self, prefix=''):
+        """Function to parse and return the nodes inside the launch file.
+
+        Parameters
+        ----------
+
+        Returns
+        -------
+        Total_nodes : dictionary
+            Details of all nodes within the launch file and the launch files
+            within the launch file.
+        """
         Total_nodes = {}
-        Merge(super(LaunchFileParser, self).print_launch_components_recursive(prefix), Total_nodes)
-        Merge(super(LaunchFileParser, self).print_includes_recursive(prefix), Total_nodes)
+        Merge_node_details(super(LaunchFileParser, self).get_launch_components_recursive(), Total_nodes)
+        Merge_node_details(super(LaunchFileParser, self).get_includes_recursive(prefix), Total_nodes)
         return Total_nodes
     pass
+
+
+def Merge_node_details(node1, node2):
+    """Function to merge.
+
+    Parameters
+    ----------
+    node1 : dictionary
+        This has the details of the nodes as a dictionary with params.
+    node2 : dictionary
+        This has the details of the nodes as a dictionary with params.
+
+    Returns
+    -------
+    node2.update(node1) : dictionary
+        Merging details of both nodes as one dictionary.
+    """
+    return(node2.update(node1))

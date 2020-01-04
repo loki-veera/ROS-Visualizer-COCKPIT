@@ -139,21 +139,29 @@
             // var proc2 = cockpit.script("bash /home/lokesh/Dashboard/bash_files/test.sh")
             // console.log("after test.sh")
             var proc1 = cockpit.script("locate -b '\\fetch_nodes.sh'")
+            console.log("After fetch")
             // proc2.stream(test)
             proc1.stream(get_nodes_path)
         }
 
         function get_nodes_path(data){
             path = data.trim()
+            // console.log(path)
             return_nodes(path)
         }
 
         function return_nodes(path){
             path = path.trim()
+            // console.log("In return")
             var file_name = document.getElementById('launch_file').value.split("\\").reverse()[0].trim()
+            console.log(file_name)
+            // console.log("File_name of launch file")
+            // console.log(file_name1)
             var command = ["bash", path, file_name].join(" ");
-            // console.log(command)
+            console.log("command")
+            console.log(command)
             var proc = cockpit.script(command);
+            console.log(proc)
             proc.stream(nodes_output);
         }
 
