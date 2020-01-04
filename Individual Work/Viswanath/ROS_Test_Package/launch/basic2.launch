@@ -1,0 +1,8 @@
+<launch>
+
+    <node pkg="beginner_tutorials" name="listen" type="listener.py"/>
+
+    <node pkg="beginner_tutorials" name="talk" type="talker.py"/>
+
+    <include file="$(find beginner_tutorials)/launch/basic.launch"/>
+</launch>
