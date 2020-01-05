@@ -1,0 +1,12 @@
+{
+    "version": 0,
+
+    "tools": {
+        "pinger": {
+            "label": "Dashboard_test",
+            "path": "Phase_1.html"
+        }
+    },
+
+    "content-security-policy": "default-src 'self' 'unsafe-inline' 'unsafe-eval'"
+}

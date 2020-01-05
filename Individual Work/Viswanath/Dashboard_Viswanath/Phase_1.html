@@ -1,0 +1,196 @@
+<html>
+    <head>
+        <title>youBot Dashboard</title>
+        <meta charset="utf-8">
+        <link href="../base1/cockpit.css" type="text/css" rel="stylesheet">
+        <script src="../base1/jquery.js"></script>
+        <script src="../base1/cockpit.js"></script>
+    </head>
+    <body>
+        <header>
+            <div>
+                <h1 style="font-weight: bold;font-size: 300%">
+                    youBot Dashboard</h1>
+                <br/>
+            </div>
+            <div>
+                <input type = "button" onClick = ret_path(); value = "Start ROS" id = "ROS_START"><br/><br/>
+                <label for="launch_file"><span style="font-size: 120%">Select a launch file</span></label>
+                <input type = "file" id = "launch_file" name = "launch_file" onchange = launch_file(); accept = "application/xml" />
+                <br/><br/>
+            </div>
+            <div>
+                <label for="node_output"><span style="font-size: 120%">Nodes are:</span></label>
+                <!-- <input style="height:300px" type="textbox" id="node_output" name="node_output" size="120"disabled></input> -->
+            </div>
+            <div>
+                <p id="node_output"></p>
+            </div>
+        </header>
+        <script>
+        var interval;
+        var path;
+        var run_time = 0;
+        /*
+         Function to locate the start_check_ros.sh file so that it works in any system
+         this function is invoked on click of start ROS button
+        */
+        function ret_path(){
+            var proc1 = cockpit.script("locate -b '\\start_check_ros.sh'");
+            proc1.stream(get_path);
+        }
+        /*
+         This function is used to read the file path from ret_path function and calls
+         start_ros function with path to start_check_ros.sh as argument
+        */
+        function get_path(data){
+            path = data
+            start_ros(path);
+        }
+        /*
+         This function is used to start ros if not running.
+        */
+        function start_ros(path) {
+            path = path.trim()
+            var command = ["bash", path, "1"].join(" ");
+            // bash home/lokesh/name.sh 1
+            var proc = cockpit.script(command)
+            proc.stream(ping_output);
+            check_ros(path);
+        }
+
+        /*
+         This function is used to set the interval to check roscore status.
+        */
+        function check_ros(path){
+            interval = setInterval(function() {check_ros_run(path);},2000);
+        }
+
+        /*
+         This function is used to check whether the roscore is running or not.
+        */
+        function check_ros_run(path){
+            path = path.trim()
+            var command = ["bash", path, "0"].join(" ");
+            // var proc = cockpit.script("bash /home/lokesh/pinger/bash_files/start_check_ros.sh 0");
+            var proc = cockpit.script(command)
+            proc.stream(ping_output);
+        }
+        /*
+         In this function the color of the start ROS button is changed according to the status from
+         check_ros_run and start_ros functions
+        */
+        function ping_output(data) {
+            if (data == 1)
+            {
+                document.getElementById("ROS_START").style.background = "#32CD32";
+            }
+            else if (data == 0){
+                clearInterval(interval);
+                document.getElementById("ROS_START").style.background = "#FF4500";
+            }
+            else if (data == 3){
+                document.getElementById("ROS_START").style.background = "#32CD32";
+                document.getElementById("launch_file").style.background = "#32CD32";
+                print_nodes()
+            }
+        }
+
+        /*
+         Functions for launch a file
+        */
+        /*
+         This function is called when a launch file is selected
+        */
+        function launch_file(){
+            var proc1 = cockpit.script("locate -b '\\bring_launch_file.sh'")
+            proc1.stream(get_bashfile_path)
+        }
+        /*
+         This function is used to get the path for bash file
+         and call the function which calls the .sh file
+        */
+        function get_bashfile_path(data){
+            path = data.trim()
+            bringup_launch_file(path)
+        }
+        /*
+         This function will send the launch file name as command line argument
+         and which changes the color according to the status
+        */
+        function bringup_launch_file(path){
+            path = path.trim()
+            var file_name = document.getElementById('launch_file').value.split("\\").reverse()[0].trim()
+            var command = ["bash", path, file_name].join(" ");
+            var proc = cockpit.script(command);
+            proc.stream(ping_output);
+        }
+        /*
+         Functions for writing the nodes
+        */
+
+        function test(data){
+            console.log("test function")
+            console.log(data)
+        }
+
+        function print_nodes(){
+            // console.log("In print nodes function")
+            // var proc2 = cockpit.script("bash /home/lokesh/Dashboard/bash_files/test.sh")
+            // console.log("after test.sh")
+            var proc1 = cockpit.script("locate -b '\\fetch_nodes.sh'")
+            console.log("After fetch")
+            // proc2.stream(test)
+            proc1.stream(get_nodes_path)
+        }
+
+        function get_nodes_path(data){
+            path = data.trim()
+            // console.log(path)
+            return_nodes(path)
+        }
+
+        function return_nodes(path){
+            path = path.trim()
+            // console.log("In return")
+            var file_name = document.getElementById('launch_file').value.split("\\").reverse()[0].trim()
+            console.log(file_name)
+            // console.log("File_name of launch file")
+            // console.log(file_name1)
+            var command = ["bash", path, file_name].join(" ");
+            console.log("command")
+            console.log(command)
+            var proc = cockpit.script(command);
+            console.log(proc)
+            proc.stream(nodes_output);
+        }
+
+        function nodes_output(data){
+            console.log("nodes output")
+            console.log(data)
+            data = data.slice(1, -2).replace(/'/g,"");
+            console.log(data)
+            var res = data.split(",")
+            var i;
+            for(i=0; i<res.length; i++){
+                var ele = document.createElement("input");
+                ele.type = "text";
+                res_split = res[i].slice(0, -2)
+                value = res[i][res[i].length-1]
+                ele.value = res_split;
+                ele.name = res_split;
+                ele.disabled = true;
+                if (value == "0"){
+                    ele.style = "text-align:center; background:red";
+                }
+                else if (value == "1"){
+                    ele.style = "text-align:center; background:green";
+                }
+
+                var foo = document.getElementById("node_output");
+                foo.appendChild(ele)
+            }
+        }
+        </script>
+    </body>
+</html>
