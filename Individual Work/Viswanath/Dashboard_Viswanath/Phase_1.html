@@ -31,6 +31,12 @@
         var interval;
         var path;
         var run_time = 0;
+        /* (Anargh's addition)
+        flag for showing nodes
+        */
+        var check_nodes_flag = 0
+        //
+        var nodes_num = 0
         /*
          Function to locate the start_check_ros.sh file so that it works in any system
          this function is invoked on click of start ROS button
@@ -92,6 +98,7 @@
             else if (data == 3){
                 document.getElementById("ROS_START").style.background = "#32CD32";
                 document.getElementById("launch_file").style.background = "#32CD32";
+                check_nodes_flag = 1
                 print_nodes()
             }
         }
@@ -121,19 +128,20 @@
         function bringup_launch_file(path){
             path = path.trim()
             var file_name = document.getElementById('launch_file').value.split("\\").reverse()[0].trim()
+            check_nodes_flag = 0
             var command = ["bash", path, file_name].join(" ");
             var proc = cockpit.script(command);
             proc.stream(ping_output);
         }
-        /*
-         Functions for writing the nodes
-        */
+
 
         function test(data){
             console.log("test function")
             console.log(data)
         }
-
+        /*
+         Functions for writing the nodes
+        */
         function print_nodes(){
             // console.log("In print nodes function")
             // var proc2 = cockpit.script("bash /home/lokesh/Dashboard/bash_files/test.sh")
@@ -143,13 +151,18 @@
             // proc2.stream(test)
             proc1.stream(get_nodes_path)
         }
-
+        /*
+         Functions for getting the path of fetch_nodes.sh
+        */
         function get_nodes_path(data){
             path = data.trim()
             // console.log(path)
             return_nodes(path)
         }
-
+        /*
+        Function to run the fetch_nodes.sh with the name of the launch file as argument
+        and getting the status of nodes in the launch file
+        */
         function return_nodes(path){
             path = path.trim()
             // console.log("In return")
@@ -164,15 +177,27 @@
             console.log(proc)
             proc.stream(nodes_output);
         }
-
+        /* (Anargh's modification)
+        Function to refresh and show the the status of nodes repeatedly
+        */
         function nodes_output(data){
-            console.log("nodes output")
-            console.log(data)
+
+          var foo = document.getElementById("node_output");
+          var i;
+          for(i=0; i<nodes_num; i++)
+             {
+               child = foo.lastElementChild;
+               child.parentNode.removeChild(child);
+             }
+            // console.log("nodes output")
+            // console.log(data)
             data = data.slice(1, -2).replace(/'/g,"");
-            console.log(data)
+            // console.log(data)
             var res = data.split(",")
-            var i;
-            for(i=0; i<res.length; i++){
+            nodes_num = res.length
+            console.log(res)
+            // console.log(foo)
+            for(i=0; i<nodes_num; i++){
                 var ele = document.createElement("input");
                 ele.type = "text";
                 res_split = res[i].slice(0, -2)
@@ -187,10 +212,33 @@
                     ele.style = "text-align:center; background:green";
                 }
 
-                var foo = document.getElementById("node_output");
+                // console.log(foo)
+
+
+                // console.log(ele)
                 foo.appendChild(ele)
+                // console.log(foo)
+                // console.log(foo[i])
+
             }
+            // Displaying nodes after 0.5 second sleep
+            if (check_nodes_flag == 1)
+                {
+                sleep(500)
+                print_nodes()
+                }
         }
+        /* (Anargh's addition)
+        Function for creating delay of certain time interval in milliseconds
+        */
+        function sleep(time){
+          console.log("Sleep")
+          var now = new Date().getTime();
+          while (new Date().getTime() < now + time)
+          {
+          }
+        }
+
         </script>
     </body>
 </html>
