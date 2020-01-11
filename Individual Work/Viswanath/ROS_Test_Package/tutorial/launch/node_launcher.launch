@@ -1,0 +1,6 @@
+<launch>
+
+    <node pkg="tutorial" name="printer_node" type="zuha_printer.py" output="screen"/>
+
+
+</launch>

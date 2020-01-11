@@ -1,0 +1,8 @@
+<launch>
+
+    <node pkg="beginner2" name="listen" type="listener2.py"/>
+
+    <node pkg="beginner2" name="talk" type="talker2.py"/>
+
+    <include file="$(find beginner2)/ros/launch/basic4.launch"/>
+</launch>
