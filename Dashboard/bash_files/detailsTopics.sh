@@ -4,6 +4,6 @@
 source '/home/zuha/catkin_ws/devel/setup.bash'
 if [ $1 == 1 ]
 then
-topiclist=$(rostopic list)
-echo "$topiclist"
+topicdet=$(timeout 3s rostopic echo $2)
+echo "$topicdet"
 fi
