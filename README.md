@@ -26,6 +26,10 @@ sudo apt-get install ros-kinetic-desktop-full
 ```bash
 sudo apt-get -y install cockpit
 ```
+Clone the github and open terminal and run
+```bash
+bash install.sh
+```
 # Features of project:
 1. Easy visualization of ROS nodes.
 2. Common platform for visualizing the ROS statistics.
@@ -48,6 +52,10 @@ bash install.sh
 ```
 
 # Credits:
-
+Prof. Dr. Nico Hochgeschwender
+M.Sc Deebul Nair
+Minh Nguyen
+Ulliyada Arun Devaiah
+Venkata Santosh Muthireddy
 # License:
 Mozilla Public License 2.0
