@@ -182,13 +182,14 @@
         */
         function nodes_output(data){
 
-          var foo = document.getElementById("node_output");
-          var i;
-          for(i=0; i<nodes_num; i++)
-             {
-               child = foo.lastElementChild;
-               child.parentNode.removeChild(child);
-             }
+            var foo = document.getElementById("node_output");
+            var i;
+            console.log
+            for(i=0; i<nodes_num; i++)
+                {
+                child = foo.lastElementChild;
+                child.parentNode.removeChild(child);
+                }
             // console.log("nodes output")
             // console.log(data)
             data = data.slice(1, -2).replace(/'/g,"");

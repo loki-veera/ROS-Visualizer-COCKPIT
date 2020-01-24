@@ -1,3 +1,7 @@
+<!--
+    Author : Lokesh Veermacheneni
+    Created on: 03-01-2020
+-->
 <html>
     <head>
         <title>youBot Dashboard</title>
@@ -5,42 +9,81 @@
         <link href="../base1/cockpit.css" type="text/css" rel="stylesheet">
         <script src="../base1/jquery.js"></script>
         <script src="../base1/cockpit.js"></script>
+        
     </head>
     <body>
         <header>
             <div>
+                <!-- Title -->
                 <h1 style="font-weight: bold;font-size: 300%">
                     youBot Dashboard</h1>
                 <br/><br/>
             </div>
+<!-- ROS controls-->
             <div class = 'Phase-1'>
+                <!--Two button to start and kill ROS-->
                 <input type = "button" onClick = ret_path(); value = "Start ROS" id = "ROS_START"> &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
                 <input type = "button" onClick = kill_rosmaster(); value = "KILL ALL &#9888" id = "ROS_KILL" style="background-color: yellow;"><br/><br/><br/>
+                <!-- Select a launch file -->
                 <label for="launch_file"><span style="font-size: 120%">Select a launch file</span></label>
                 <input type = "file" id = "launch_file" name = "launch_file" onchange = launch_file(); accept = "application/xml" />
                 <br/><br/>
             </div>
+<!-- Nodes display-->
+            <div>
+                <label for="node_output"><span style="font-size: 120%">Nodes are:</span></label>
+                <!-- <input style="height:300px" type="textbox" id="node_output" name="node_output" size="120"disabled></input> -->
+            </div>
+            <div>
+                <p id="node_output"></p><br/><br/><br/><br/><br/><br/>
+            </div>
+<!-- Topics display -->
+            <!-- ZUHA DROP DOWN   --> 
+            <!-- i can put onlcick func for the 3rd task and fix the display and initialye detailsnode() function --> 
+            <label for="select"><span style="font-size: 120%">Topics are:</span></label>
+            <div class="selectdropdown">
+                <select id="select">
+                    <option value="default">Select a topic</option>
+                </select>
+            </div>
+            <div id="outer" class="outerdesign"></div>
+            <div>
+                <p id="echo_output"></p><br/><br/><br/><br/><br/><br/>
+            </div>
+            
         </header>
         <script>
         var interval;
+        var  RefreshingNode;
+        var interval_topic;
+        /* (Anargh's addition)
+        flag for showing nodes
+        */
+        var check_nodes_flag = 0
+        //
+        var nodes_num = 0
+        /*
+            Function to check the ros status on start of application
+        */
         document.addEventListener('DOMContentLoaded', function() {
-            // your code here
             check_ros_run();
         }, false);
 
+        /*
+            Function to kill all the activity of ROS on click of ROS_KILL button
+        */
         function kill_rosmaster(){
-            var command = "bash /usr/share/cockpit/dashboard/bash_files/start_check_ros_2.sh 2";
+            var command = "bash /usr/share/cockpit/dashboard/files/start_check_ros_2.sh 2";
             var proc = cockpit.script(command);
             proc.stream(ping_output);
         }
-
 
         /*
          Function to locate the start_check_ros.sh file so that it works in any system
          this function is invoked on click of start ROS button
         */
         function ret_path(){
-            var command = "bash /usr/share/cockpit/dashboard/bash_files/start_check_ros_2.sh 1";
+            var command = "bash /usr/share/cockpit/dashboard/files/start_check_ros_2.sh 1";
             var proc = cockpit.script(command);
             proc.stream(ping_output);
             check_ros();
@@ -57,7 +100,7 @@
          This function is used to check whether the roscore is running or not.
         */
         function check_ros_run(){
-            var command = "bash /usr/share/cockpit/dashboard/bash_files/start_check_ros_2.sh 0"
+            var command = "bash /usr/share/cockpit/dashboard/files/start_check_ros_2.sh 0"
             var proc = cockpit.script(command)
             proc.stream(ping_output);
         }
@@ -67,7 +110,7 @@
          check_ros_run and start_ros functions
         */
         function ping_output(data) {
-            console.log(data)
+            // console.log(data)
             if (data == 1)
             {
                 document.getElementById("ROS_START").style.background = "#32CD32";
@@ -77,18 +120,33 @@
                 document.getElementById("ROS_START").style.background = "#FF4500";
             }
             else if (data == 2){
+                clearInterval(interval_topic);
+                check_nodes_flag=0;
+                clearInterval(RefreshingNode);
+                nodes_num = 0;
+                document.getElementById("outer").innerHTML = '';
                 document.getElementById("ROS_START").style.background = "#FF4500";
                 document.getElementById("launch_file").style.background = "#FFFFFF";
                 document.getElementById("launch_file").value = null;
+                document.getElementById("node_output").innerHTML = '';
+                document.getElementById("echo_output").innerHTML = '';
+                var select = document.getElementById("select");
+                for (i=0; i<select.length; i++)
+                {
+                    select.remove(i)
+                }
             }
             else if (data == 3){
-                console.log(data)
+                // console.log(data)
                 document.getElementById("launch_file").style.background = "#32CD32";
-                for(i=0; i<1000000000; i++){
-                    
+                check_nodes_flag = 1
+                for(i=0; i<1000000000; i++){        
                 }
                 check_ros_run()
                 // print_nodes()
+                return_nodes()
+                detailsNode()
+                // Add the function here to connect to the print nodes
             }
         }
 
@@ -101,11 +159,149 @@
         */
         function launch_file(){
             var file_name = document.getElementById('launch_file').value.split("\\").reverse()[0].trim()
-            var command = ["bash /usr/share/cockpit/dashboard/bash_files/bring_launch_file.sh", file_name].join(" ")
-            console.log(command)
+            var command = ["bash /usr/share/cockpit/dashboard/files/bring_launch_file.sh", file_name].join(" ")
+            check_nodes_flag = 0
             var proc1 = cockpit.script(command)
             proc1.stream(ping_output)
         }
+        /*
+         Functions to print the nodes
+        */
+      
+        function return_nodes(){
+            // console.log("In return_nodes")
+            var file_name = document.getElementById('launch_file').value.split("\\").reverse()[0].trim()
+            // console.log(file_name)
+            var command = ["bash /usr/share/cockpit/dashboard/files/fetch_nodes.sh", file_name].join(" ");
+            // console.log(command)
+            var proc_2 = cockpit.script(command);
+            proc_2.stream(nodes_output);
+        }
+
+        function nodes_output(data){
+           
+            var foo = document.getElementById("node_output");
+            var i;
+            for(i=0; i<nodes_num; i++){
+                child = foo.lastElementChild;
+                child.parentNode.removeChild(child);
+            }
+            data = data.slice(1, -2).replace(/'/g,"");
+            // console.log(data)
+            var res = data.split(",")
+            nodes_num = res.length
+            console.log(res)
+            // console.log(foo)
+            for(i=0; i<nodes_num; i++){
+                var ele = document.createElement("input");
+                ele.type = "text";
+                res_split = res[i].slice(0, -2)
+                value = res[i][res[i].length-1]
+                ele.value = res_split;
+                ele.name = res_split;
+                ele.disabled = true;
+                if (value == "0"){
+                    ele.style = "text-align:center; background:red";
+                }
+                else if (value == "1"){
+                    ele.style = "text-align:center; background:green";
+                }
+
+                // console.log(foo)
+
+
+                // console.log(ele)
+                foo.appendChild(ele)
+                // console.log(foo)
+                // console.log(foo[i])
+                // Displaying nodes after 0.5 second sleep
+            }
+            if (check_nodes_flag == 1)
+                {
+                sleep(500)
+                return_nodes()
+                }
+            // detailsNode()
+            }
+        /* (Anargh's addition)
+        Function for creating delay of certain time interval in milliseconds
+        */
+        function sleep(time){
+          console.log("Sleep")
+          var now = new Date().getTime();
+          while (new Date().getTime() < now + time)
+          {
+          }
+        }
+        /* 
+            Functions for the display of the topics
+        */
+        /* Zuha code start */
+        // var select = document.getElementById("select").addEventListener("change", detailsNode(), false);
+
+
+        window.onload = function () {
+        var selectBox = document.getElementById("select");
+        selectBox.addEventListener('change', changeFun);
+
+        }        
+        // var path_rostopicfile = './bash_files/rostopic_list.sh'
+        // var path2_rostopic = '/home/zuha/Downloads/Assignment_COntent/SDP/Software-Development-Project/Dashboard/bash_files/rostopic_list.sh 2'
+        var select = document.getElementById("select").addEventListener("change", detailsNode(), false);
+
+        //  This function gets the list from bash
+        function detailsNode(){
+            var proc = cockpit.script('bash /usr/share/cockpit/dashboard/files/rostopic_list.sh 1')
+            proc.stream(checking_topic_list);
+        }
+        // THis function displays the list in dropdown
+        function checking_topic_list(topic_list){
+            var list_topiclist = topic_list
+
+            // split by spaces
+            list_topiclist = list_topiclist.trim().split(/\s+/)
+            //console.log(list_topiclist)
+        
+           // dropdown
+            var select = document.getElementById("select"),
+            arr = list_topiclist
+            
+            //Loop so it keeps appending the topics to dropdown 
+             for(var i = 0; i < arr.length; i++)
+            {
+                 var option = document.createElement("OPTION"),
+                 txt = document.createTextNode(arr[i]);
+                 option.appendChild(txt);
+                 option.setAttribute("value",arr[i]);
+                 select.insertBefore(option,select.lastChild);
+                 
+            }
+           
+        }
+        //loki sent it
+        // This fun sends the clicked rostopic's value to bash to get the details about it. it sends as 2 argument ele_select
+        function changeFun() {
+ 
+            var ele_select = document.getElementById("select").value;
+            var command = ['bash /usr/share/cockpit/dashboard/files/detailsTopic.sh 1', ele_select].join(" ");
+            var proc = cockpit.script(command);
+            proc.stream(echo_topiclist);
+        }
+        // Adding a little delay
+        function echo_topiclist(chekingoutput){
+            console.log(chekingoutput)
+            chekingoutput;
+            console.log("helooooooooWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWeeeeeeeeeeeeeeeeeeeeeeeeeeW")
+            setTimeout(changinghtml(chekingoutput),2000)
+        }
+        // CHanging the display
+        function changinghtml(chekingoutput){
+            var tired = document.getElementById("outer")
+            tired.innerHTML= chekingoutput
+            //clearInterval(RefreshingNode);
+
+        }
+        RefreshingNode =  setInterval(function () { detailsNode ; console.log('intervel fun') }), 3000;
         </script>
     </body>      
 </html>

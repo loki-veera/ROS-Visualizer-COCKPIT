@@ -1,15 +1,17 @@
+#####
+# Author : Lokesh Veermacheneni
+# Created on: 03-01-2020
+#####
 #!/bin/bash
-# tmux new-session -A -s dashboard
-#cd catkin_ws
-#catkin build
-source "/home/loki/catkin_ws/devel/setup.bash"
-
+source "/usr/share/cockpit/dashboard/files/dashboard_config.sh"
+source "$path"
 
 #cmd="locate -b '\\"$1"'"
+# Command to find the file
 cmd="find /home -name $1"
-
 path=$(eval $cmd)
-#echo $path
+
+# Split the path at '/' to find the package name
 IFS='/'
 read -ra split<<<"$path"
 last_str=''
@@ -22,7 +24,8 @@ do
     fi
     last_str=$i
 done
+
+# Launch the file
 launch_cmd="roslaunch "$package_name" "$1
-#echo $launch_cmd
 echo 3
 launch_status=$(eval $launch_cmd)
