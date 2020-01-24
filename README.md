@@ -52,8 +52,8 @@ bash install.sh
 ```
 
 # Credits:
-Prof. Dr. Nico Hochgeschwender
-M.Sc Deebul Nair
+Prof. Dr. Nico Hochgeschwender \\
+M.Sc Deebul Nair \\
 Minh Nguyen
 Ulliyada Arun Devaiah
 Venkata Santosh Muthireddy
