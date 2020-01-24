@@ -52,10 +52,10 @@ bash install.sh
 ```
 
 # Credits:
-Prof. Dr. Nico Hochgeschwender \\
-M.Sc Deebul Nair \\
-Minh Nguyen
-Ulliyada Arun Devaiah
-Venkata Santosh Muthireddy
+1. Prof. Dr. Nico Hochgeschwender
+2. M.Sc Deebul Nair 
+3. Minh Nguyen
+4. Ulliyada Arun Devaiah
+5. Venkata Santosh Muthireddy
 # License:
 Mozilla Public License 2.0
